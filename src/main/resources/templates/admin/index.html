@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/aspirasiCategory/aspirasiByCategory.css}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+    <div class="background" style="background-color: #f0ffff; width: 100%;">
+        <div class="container">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="#">Features</a>
+                    <a class="nav-item nav-link" href="#">Pricing</a>
+                    <a class="nav-item nav-link disabled" href="#">Disabled</a>
+                  </div>
+                </div>
+              </nav>
+
+            <div class="row align-items-center gx-5 p-5">
+
+                <!-- Logo Side -->
+                <div class="col">
+                    <img src="../../static/images/fullLogo.png"  width="75%" th:src="@{images/fullLogo.png}" alt="fadhli"/>
+                </div>
+    
+                <!-- Name Sidev-->
+                <div class="col text-center">
+                    <h1>Studi Independen</h1> 
+                    <h4> <i> Full Stack Developer </i></h3>
+                </div>
+
+                <div id="theInput" th:text="${#authentication.name}"></div>
+                <script>
+                    var value = document.getElementById("theInput").innerHTML;
+                    console.log(value)
+                </script>
+            </div>
+            
+    
+            <!--  Transit   -->
+            <div class="d-flex align-items-center justify-content-center mb-3 p-2  ">
+                <ul class="nav nav-pills align-items-center mb-3 m-2" id="pills-tab" role="tablist">
+                    <li class="nav-item px-2" role="presentation">
+                    <a th:href="@{/aspirasiCategory}"><button th:href="@{/home}" class="btn btn-outline-info" type="button">Kembali ke Kategori Aspirasi</button></a>
+                    </li>
+                </ul>
+            </div>
+                <h1>Admin Section</h1>
+                <br>
+        </div>
+    </div>
+
+    <div class="cardBackground" style="background-color: #ffffff;">
+        
+        <div class="container my-5">
+            <div class="d-felx  d-inline-flex justify-content-between mb-2 mx-3" style=" width:  100%;" >
+                <h2>Daftar Aspirasi</h2>
+                <div>
+                    <button style="background-color: #6a9999 ;" type="button" class="btn btn-success fw-bold justify-content-end" onclick="reload()">
+                            Refresh
+                    </button>
+                    <button th:data-sbc="${category.categoryName}" th:data-sbcid="${category.id}" style="background-color: #6a9999 ;" type="button" class="btn btn-success mx-5 fw-bold justify-content-end" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Create Aspirasi
+                    </button>
+                </div>
+                
+            </div>
+            <div class="row d-flex  justify-content-center ">
+                <div class="col-xl-3 p-3" th:each="aspirasiList : ${aspirasis}">
+                    <div class="cardAspriasi"> 
+                        <!-- image here -->
+                        <div class="p-3"><img th:src="@{/images/jakarta.jpg}" class="cardImg card-img-top" alt="..."></div>
+                        <div class="card-body d-felx ">
+                            <p class="card-title" id="yolo" th:text= "${aspirasiList.aspirasiCategory.categoryName}"></p>
+                            <hr>
+                            <div><p class="card-text flex-nowrap  overflow-hidden" th:text= "${aspirasiList.description}"></p></div>
+                            <!-- button / a here -->
+                        </div>
+                        <div class="card-footer text-muted">
+                            
+                            <a th:href="@{'/aspirasi/' + ${aspirasiList.id}}"><button class="btn btn-outline-info m-3" data-bs-toggle="modal" data-bs-target="#detailAspirasi" type="button">Detail</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dataBackground my-3" style="background-color: #f0ffff;">
+        <!-- Content -->
+    <div class="container py-4">
+        <div class="container-fluid py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-5 fw-bold mb-4">Country</h1>
+                <!-- button here -->
+            </div>
+            <table id="table-aspirasi" class="table display compact hover table-bordered">
+                <thead class=" table-dark">
+                    <tr>
+                        <th class="col-1">Id</th>
+                        <th class="col-1">Like</th>
+                        <th class="col-1">Dislike</th>
+                        <th class="col-4">Description</th>
+                        <th class="col-1">Creator</th>
+                        <th class="col-3">Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+    </div>
+        
+
+        
+
+   
+    
+    <!-- Detail Aspirasi -->
+    <div class="modal fade bd-example-modal-lg" id="detailAspirasi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content p-3">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detail Region</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+
+                    <div class="col">
+                      <h5>Id</h5>
+                      <h5>Subject</h5>
+                      <h5>Like</h5>
+                      <h5>Dislike</h5>
+                      <h5>Description</h5>
+                      <h5>Creator</h5>
+                    </div>
+                    <div class="col" >
+                      <h5 id="aspirasi-id">Id</h5>
+                      <h5 id="aspirasi-subject">Subject</h5>
+                      <h5 id="aspirasi-like">Like</h5>
+                      <h5 id="aspirasi-dislike">Dislike</h5>
+                      <h5 id="aspirasi-description">Description</h5>
+                      <h5 id="aspirasi-creator">Creator</h5>
+                    </div>
+                  </div>
+              </div>
+
+              <div><h3>Comment</h3></div>
+
+              <div class="row d-flex  justify-content-start" th:each="ascome : ${comments}">
+                    <div class="cardComment">
+                        <!-- image here -->
+                        <div class="card-body d-felx  ">
+                            <p class="comment-title justify-content-start" th:text= "${ascome.user.username}"></p>
+                            <hr>
+                            <div><p class="comment-text flex-nowrap  overflow-hidden" th:text= "${ascome.comment}"></p></div>
+                            
+                            <!-- button / a here -->
+                            <a style="cursor: pointer; color: blue;" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-cmtid="${ascome.id}"  th:data-cmt="${ascome.comment}">Reply ...</a>
+                        </div>
+                    </div>
+            </div>
+
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Reply Comment modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Reply Messege</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Replay comment :</label>
+                    <input type="hidden" class="replyid form-control" id="input-comment-id">
+                    <input type="text" class="reply form-control" id="input-reply-comment" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Comment</label>
+                    <input type="text" class="form-control" id="input-comment">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Masukkan nim kamu : </label>
+                    <input type="text" class="form-control" id="input-nim" th:value="${#authentication.name}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="createCmt()">Send message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Create Country -->
+    <div class="modal fade" id="createAspirasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title fw-bold" id="staticBackdropLabel">Create Aspirasi</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="input-subject">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="input-description">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">User Nim</label>
+                            <input type="text" class="form-control" id="input-nim">
+                        </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label for="name" class="form-label">Region</label>
+                      <input type="text" class="form-control" id="input-regionName">
+                    </div> -->
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="createAspirasi()">Save</button>
+                  </div>
+              </div>
+          </div>
+    </div>
+
+    <!-- JQuery CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- JS DataTables CDN -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:src="@{/js/admin/admin.js}"></script>
+    <script th:src="@{/js/csrfToken.js}"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+        <!--  Data Place   -->
+        <!-- <div class="container-md py-4" width="50%">
+            <div class="d-flex justify-content-between align-items-center py-2">
+                <h1>Country</h1>
+                <a th:href="@{/country/create}" class="btn btn-success fw-bold">Add Country</a>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Region ID</TH>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="country : ${countries}">
+                        <td th:text="${country.id}"></td>
+                        <td th:text="${country.code}"></td>
+                        <td th:text="${country.name}"></td>
+                        <td ><a class="disabled-link" th:href="@{'/region/detail/' + ${country.region.regionId}}" th:text="${country.region.regionId}" ></a></td>
+                        <td>
+                            <a th:href="@{'/country/detail/' + ${country.id}}" class="btn btn-primary">Info</a>
+                            <a th:href="@{'/country/update/' + ${country.id}}" class="btn btn-warning">Edit</a>
+                            <a th:href="@{'/country/delete/' + ${country.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+        

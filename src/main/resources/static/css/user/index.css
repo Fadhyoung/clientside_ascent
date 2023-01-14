@@ -1,0 +1,112 @@
+
+/*
+
+All grid code is placed in a 'supports' rule (feature query) at the bottom of the CSS (Line 310). 
+        
+The 'supports' rule will only run if your browser supports CSS grid.
+
+Flexbox and floats are used as a fallback so that browsers which don't support grid will still recieve a similar layout.
+
+*/
+
+/* Base Styles */
+textarea {
+    width: 300px;
+    height: 150px;
+    }
+
+h6 a {
+        all: unset;
+        text-decoration: none;
+        cursor: pointer;
+}
+
+.bg-dark {
+    background-color: #343a40!important;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+.cardAspriasi {
+    margin-bottom: 5px; /* Added */
+    border-radius: 1em;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    transition: 0.3s;
+}
+
+.cardAspriasiIki{
+    margin-bottom: 10px; /* Added */
+    border-radius: 1em;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    transition: 0.3s;
+}
+
+.profile-image {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-image img {
+    border-radius: 75%;
+}
+
+.user-profile {
+    font-size: larger;
+}
+
+.user-profile ul li {
+    text-decoration: none;
+    list-style-type: none;
+    display: inline-block;
+}
+
+.card-title{
+    height: 50px;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.card-text {
+    height: 50px;
+}
+
+#description {
+    font-weight: 300;
+    font-size: medium;
+    color: #000;
+}
+
+#aspirasi-informasi{
+    font-size: smaller;
+    color: #6a9999;
+  }
+
+
+.card-text:hover {
+    height: auto;
+    overflow: visible;
+  }
+
+.cardImg{
+    width: 65%;
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+}
+
+.form-group { display:hide; }
+
+.card-text:hover ~ .form-group { display:block; }
+
+/* ================================ */

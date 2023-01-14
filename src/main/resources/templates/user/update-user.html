@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <link rel="stylesheet" type="text/css" th:src="@{/css/user/create-user.css}">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container" style="width: 50%;">
+        <div class="py-5 text-center">
+            <img class="mb-4 my-5 animate__animated animate__zoomIn" th:src="@{/images/ascentBlack.png}" alt="" width="20%"> <br>
+          <h2>Update Your Account</h2>
+          <a th:href="@{/aspirasiCategory}" id="backToLogin"><button class="btn my-2" style="background-color: #6a9999; color: white;" type="button">Back Home</button></a>
+          <p class="lead">Isi identitasmu di bawah ini dengan lengkap ya, </p>
+        </div>
+  
+        <div class="row">
+            <div class="col-md-12 order-md-1 animate__animated animate__fadeInDown">
+                <h4 class="mb-3">Form Pendaftaran</h4>
+                <form class="needs-validation" >
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label>Username</label>
+                            <input type="text" class="form-control" id="input-username" th:value="${user.username}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Password</label>
+                            <div class="input-group" id="show_hide_password">
+                            <input class="form-control" type="text" id="input-password" required>
+                            <div class="input-group-addon">
+                                <a href=""><button type="button" class="btn btn-outline-info">see mee</button></a>
+                            </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <labels>Nim</label>
+                            <input type="number" class="form-control" id="input-nim" th:value="${user.nim}" required>
+                        </div>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text" class="form-control" id="input-email" th:value="${user.email}" required>
+                        </div>
+                    </div>
+    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label>No. Telp</label>
+                            <input type="text" class="form-control" id="input-notelp"  th:value="${user.notelp}" required>
+                        </div>                    
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <input type="checkbox" required> Saya menyetujui segala syarat dan ketentuan yang berlaku 
+                        </div>                    
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <button type="button" style="width: 100%;" class="btn button-submit btn-card btn-outline-info "
+                            th:onclick="updateUser([[${user.id}]])" >Update</button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr>
+                <h4>Danger Area</h4>
+                <p>Delete user artinya anda menghapus akun beserta semua aspirasi dan comment yang sudah anda buat selama ini. Aspirasi atau comment yang terhapus tidak akan
+                    diarsipkan!!
+                </p>
+                <button type="button" style="width: 100%;" class="btn btn-card btn-outline-danger "
+                            th:onclick="deleteUser([[${user.nim}]])" >Delete Account</button>
+            </div>
+        </div>
+  
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+          <p class="mb-1">&copy; 2022-2023 KELOMPOK 1 - ASCENT</p>
+          <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+          </ul>
+        </footer>
+      </div>
+
+      <div class="backgorund bg1" style="background-color: rgb(39, 39, 39);">
+        <div class="container" >
+            <div th:replace="./util/navbar :: bottombar">
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- here boy -->
+    
+
+    <!-- JQuery CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- JS DataTables CDN -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:src="@{/js/user/user.js}"></script>
+    <script th:src="@{/js/csrfToken.js}"></script>
+</body>
+</html>

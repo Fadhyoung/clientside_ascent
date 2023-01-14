@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{css/aspirasiCategory/index.css}">
+
+    <style>
+
+    .navbar a {
+        color: white;
+    }    
+        /* Ensure that the demo table scrolls */
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+ 
+    div.container {
+        width: 80%;
+    }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="backgorund bg1" style="background-color: rgb(39, 39, 39);">
+        <div class="container" >
+            <div th:replace="util/navbar :: navbar">
+            
+            </div>
+        </div>
+    </div>
+
+    <main role="main">
+  
+        <div class="album bg-light">
+            <div class=" my-3">
+                <!-- Content -->
+            <div class="container py-4">
+                <div class="container-fluid py-5">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="display-5 fw-bold mb-4">List of User</h1>
+                        <!-- button here -->
+                    </div>
+                    <table id="table-user" class="table display compact hover table-bordered stripe row-border order-column" style="width:100%">
+                        <thead class=" table-dark">
+                            <tr>
+                                <th class="col-1">Id</th>
+                                <th class="col-1">NIM</th>
+                                <th class="col-1">Username</th>
+                                <th class="col-1">Password</th>
+                                <th class="col-1">Email</th>
+                                <th class="col-1">Notelp</th>
+                                <th class="col-1">VerificationCode</th>
+                                <th class="col-1">IsAccountLocked</th>
+                                <th class="col-1">IsEnabled</th>
+                                <th class="col-1">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+  
+    
+    </main>
+
+    <div class="backgorund bg1" style="background-color: rgb(39, 39, 39);">
+        <div class="container animate__animated animate__fadeInUp" >
+            <div th:replace="util/navbar :: bottombar">
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- JS DataTables CDN -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:src="@{/js/user/all-user.js}"></script>
+    <script th:src="@{/js/csrfToken.js}"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+        <!--  Data Place   -->
+        <!-- <div class="container-md py-4" width="50%">
+            <div class="d-flex justify-content-between align-items-center py-2">
+                <h1>Country</h1>
+                <a th:href="@{/country/create}" class="btn btn-success fw-bold">Add Country</a>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Region ID</TH>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="country : ${countries}">
+                        <td th:text="${country.id}"></td>
+                        <td th:text="${country.code}"></td>
+                        <td th:text="${country.name}"></td>
+                        <td ><a class="disabled-link" th:href="@{'/region/detail/' + ${country.region.regionId}}" th:text="${country.region.regionId}" ></a></td>
+                        <td>
+                            <a th:href="@{'/country/detail/' + ${country.id}}" class="btn btn-primary">Info</a>
+                            <a th:href="@{'/country/update/' + ${country.id}}" class="btn btn-warning">Edit</a>
+                            <a th:href="@{'/country/delete/' + ${country.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+        

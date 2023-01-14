@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/aspirasiCategory/aspirasiByCategory.css}">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="backgorund bg1" style="background-color: rgb(39, 39, 39);">
+        <div class="container" >
+            <div th:replace="./util/navbar :: navbar">
+            
+            </div>
+        </div>
+    </div>
+
+    <main role="main">
+
+        <section class="jumbotron text-center">
+          <div class="container">
+            <h1 class="jumbotron-heading animate__animated animate__zoomIn">LAMAN APPROVAL ASPIRASI</h1>
+            <p>Daftar Aspirasi Yang Tidak Disetujui</p>     
+            <br>
+            <p class="lead text-muted">Aspirasi yang ditolak akan dihapus admin dalam kurun waktu 2 x 24 jam</p>
+            <p>
+                <button style="background-color: #6a9999 ;" type="button" class="btn btn-success fw-bold justify-content-end" onclick="reload()">
+                    Refresh
+                </button>
+                <p th:text="${Rejected}"></p>
+            </p>
+          </div>
+        </section>
+  
+        <div class="album py-5 bg-light">
+          <div class="container">
+  
+            <div class="row " id="ListofAspirasiCategory">
+                <div class="col-md-4 " th:each="aspirasi : ${aspirasis}">
+                    <div class="card mb-4 box-shadow animate__animated animate__fadeInDown">
+                        <!-- <img class="card-img-top" th:src="@{/images/jakarta.jpg}" alt="Card image cap"> -->
+                        <div class="card-body">
+                            <p class="card-title" id="yolo" th:text= "${aspirasi.aspirasiCategory.categoryName}"></p>
+                                <hr>
+                            <p class="card-text overflow-hidden" th:text= "${aspirasi.description}"></p>
+                            <p th:text="'Approval Status : ' +${aspirasi.approval.name}" style="color: #6a9999; font-size: smaller;"></p>
+                            <p th:text="'Date Created : ' + ${#dates.format(aspirasi.date, 'dd-MM-yyyy')}" style="color: #6a9999; font-size: smaller;"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="@{'/aspirasi/' + ${aspirasi.id}}"><button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#detailAspirasi" type="button">Detail</button></a>
+                                    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn mx-3 btn-card btn-outline-info " data-bs-toggle="modal" 
+                                    th:data-aa="${aspirasi.approval.id}" th:data-ai="${aspirasi.id}"   data-bs-target="#approveAspirasi">Approve</button>
+                                    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-card btn-outline-danger"
+                                        th:onclick="deleteAspirasi([[${aspirasi.id}]])">Delete</button>
+                                </div>
+                                
+                            <small class="text-muted"></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="backgorund bg1" style="background-color: rgb(39, 39, 39);">
+            <div class="container" >
+                <div th:replace="./util/navbar :: bottombar">
+                
+                </div>
+            </div>
+        </div>
+  
+    
+    </main>
+    
+    <!-- Create Aspirasi -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title fw-bold" id="staticBackdropLabel">Create Aspirasi</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Subject</label>
+                            <input type="text" class="createAspirasi form-control" id="input-subject" disabled>
+                            <input type="hidden" class="createAspirasi2 form-control" id="input-category-id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="input-description">
+                        </div>
+                        <div class="mb-3">
+                            <label>Nama Pengirim</label>
+                            <input type="text" class="form-control" id="input-username" th:value="${#authentication.name}" disabled>
+                            <input type="hidden" class="form-control" id="input-category" th:value="${param.query}">
+                        </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label for="name" class="form-label">Region</label>
+                      <input type="text" class="form-control" id="input-regionName">
+                    </div> -->
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="createAspirasi()">Save</button>
+                  </div>
+              </div>
+          </div>
+    </div>
+
+    <!-- Approve Aspirasi -->
+  <div class="modal fade" id="approveAspirasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="staticBackdropLabel">Take Action to this Aspirasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="approveAspirasiId form-control" id="aspirasi-id">
+                <input type="hidden" class="approveAspirasiAi form-control" id="aspirasi-approve-id">
+                <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-card btn-outline-info m-3"
+                th:onclick="approveAspirasi(1)">Wait</button>
+                <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-card btn-outline-info m-3"
+                th:onclick="approveAspirasi(2)">Approve</button>
+                <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-card btn-outline-info m-3"
+                th:onclick="approveAspirasi(3)">Reject</button>
+        </div>
+    </div>
+</div>
+
+    <!-- JQuery CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- JS DataTables CDN -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:src="@{/js/aspirasiCategory/aspirasiCategory.js}"></script>
+    <script th:src="@{/js/csrfToken.js}"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+        <!--  Data Place   -->
+        <!-- <div class="container-md py-4" width="50%">
+            <div class="d-flex justify-content-between align-items-center py-2">
+                <h1>Country</h1>
+                <a th:href="@{/country/create}" class="btn btn-success fw-bold">Add Country</a>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Region ID</TH>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="country : ${countries}">
+                        <td th:text="${country.id}"></td>
+                        <td th:text="${country.code}"></td>
+                        <td th:text="${country.name}"></td>
+                        <td ><a class="disabled-link" th:href="@{'/region/detail/' + ${country.region.regionId}}" th:text="${country.region.regionId}" ></a></td>
+                        <td>
+                            <a th:href="@{'/country/detail/' + ${country.id}}" class="btn btn-primary">Info</a>
+                            <a th:href="@{'/country/update/' + ${country.id}}" class="btn btn-warning">Edit</a>
+                            <a th:href="@{'/country/delete/' + ${country.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+        

@@ -8,6 +8,7 @@ public class ClientsideAscentApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClientsideAscentApplication.class, args);
+                System.out.println("Client app is running......");
 	}
 
 }
